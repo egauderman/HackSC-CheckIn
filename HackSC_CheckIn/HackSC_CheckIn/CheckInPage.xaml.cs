@@ -97,9 +97,12 @@ namespace HackSC_CheckIn
 			}
 		}
 
+		private SearchResult _currentPerson;
 		private void SearchResultButton_Click(object sender, RoutedEventArgs e)
 		{
+			(App.Current as App).CheckIn_CurrentPerson = (sender as Button).DataContext as SearchResult;
 
+			NavigationService.Navigate(new Uri("/CheckInParticipantPage.xaml", UriKind.Relative));
 		}
 	}
 }

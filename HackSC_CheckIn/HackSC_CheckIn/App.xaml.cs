@@ -12,6 +12,8 @@ namespace HackSC_CheckIn
 {
 	public partial class App : Application
 	{
+		#region Stuff I Didn't Write
+
 		/// <summary>
 		/// Provides easy access to the root frame of the Phone Application.
 		/// </summary>
@@ -219,5 +221,9 @@ namespace HackSC_CheckIn
 				throw;
 			}
 		}
+
+		#endregion Stuff I Didn't Write
+
+		public SearchResult CheckIn_CurrentPerson;
 	}
 }
