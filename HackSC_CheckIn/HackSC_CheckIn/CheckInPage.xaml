@@ -29,44 +29,41 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
-            <StackPanel Grid.Row="0">
-                <TextBlock Text="Search Users" Style="{StaticResource PhoneTextGroupHeaderStyle}"/>
-                <TextBox x:Name="SearchQueryBox"
-                         TextChanged="SearchQueryBox_TextChanged"
-                         />
-            </StackPanel>
 
-            <Grid Grid.Row="1">
-                <ScrollViewer x:Name="SearchResultsScrollViewer">
-                    <StackPanel>
-                        <TextBlock Text="SearchResults Begin"/>
+            <ScrollViewer x:Name="SearchResultsScrollViewer">
+                <StackPanel>
+                    <!-- Title -->
+                    <TextBlock Text="Search Users" Style="{StaticResource PhoneTextGroupHeaderStyle}"/>
+                    <TextBox x:Name="SearchQueryBox"
+                             TextChanged="SearchQueryBox_TextChanged"
+                             />
+                    
+                    <!-- Content -->
+                    <TextBlock Text="SearchResults Begin"/>
 
-                        <ItemsControl x:Name="SearchResultsItemsControl" ItemsSource="{Binding}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="auto"/>
-                                            <RowDefinition Height="auto"/>
-                                        </Grid.RowDefinitions>
+                    <ItemsControl x:Name="SearchResultsItemsControl" ItemsSource="{Binding}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
 
-                                        <Button x:Name="SearchResultButton"
-                                                Content="{Binding Name}"
-                                                Click="SearchResultButton_Click"
-                                                />
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        
-                        <TextBlock Text="SearchResults End"/>
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
+                                    <Button x:Name="SearchResultButton"
+                                            Content="{Binding Name}"
+                                            Click="SearchResultButton_Click"
+                                            />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <TextBlock Text="SearchResults End"/>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 

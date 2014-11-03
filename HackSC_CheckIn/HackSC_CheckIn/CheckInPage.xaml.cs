@@ -9,6 +9,8 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Newtonsoft.Json.Linq;
+
 
 namespace HackSC_CheckIn
 {
@@ -36,11 +38,14 @@ namespace HackSC_CheckIn
 
 		private void SearchQueryBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			// Query the server
-			string searchUri = "http://louise.codejoust.com/hacksc/people.php?q=" + SearchQueryBox.Text;
+			if (SearchQueryBox.Text.Length > 0)
+			{
+				// Query the server
+				string searchUri = "http://louise.codejoust.com/hacksc/people.php?q=" + SearchQueryBox.Text;
 
-			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(searchUri);
-			request.BeginGetResponse(SearchQueryCallback, request);
+				HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(searchUri);
+				request.BeginGetResponse(SearchQueryCallback, request); 
+			}
 		}
 
 		private void SearchQueryCallback(IAsyncResult result)
@@ -50,13 +55,25 @@ namespace HackSC_CheckIn
 			{
 				try
 				{
+					// Get json string
 					WebResponse response = request.EndGetResponse(result);
 					StreamReader reader = new StreamReader(response.GetResponseStream());
-					string searchResultJSON = reader.ReadToEnd();
+					string searchResultJsonString = reader.ReadToEnd();
 
 					Dispatcher.BeginInvoke(() =>
 					{
-						SearchResults.Add(new SearchResult { Name = searchResultJSON });
+						SearchResults.Clear();
+
+						// Parse json string
+						JObject jsonObject = JObject.Parse(searchResultJsonString);
+						JArray resultsArray = jsonObject["data"] as JArray;
+						for (JToken iterator = resultsArray.First; iterator != null; iterator = iterator.Next)
+						{
+							string name = iterator.Value<string>("name");
+
+							// Add search result to SearchResults
+							SearchResults.Add(new SearchResult { Name = name });
+						}
 					});
 				}
 				catch (WebException)
