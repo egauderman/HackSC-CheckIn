@@ -29,11 +29,7 @@ namespace HackSC_CheckIn
 
 			//SearchResultsItemsControl.DataContext = SearchResults;
 
-			SearchResult s = new SearchResult();
-			s.Name = "User";
-			SearchResults.Add(s);
-
-			SearchResultsItemsControl.DataContext = SearchResults;
+			SearchResultsItemsControl.ItemsSource = SearchResults;
 		}
 
 		private void SearchQueryBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -44,8 +40,20 @@ namespace HackSC_CheckIn
 				string searchUri = "http://louise.codejoust.com/hacksc/people.php?q=" + SearchQueryBox.Text;
 
 				HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(searchUri);
-				request.BeginGetResponse(SearchQueryCallback, request); 
+				request.BeginGetResponse(SearchQueryCallback, request);
 			}
+			else
+			{
+				SearchResults.Clear();
+				NoResultsText.Visibility = System.Windows.Visibility.Collapsed;
+			}
+		}
+
+		private void DisplayNoResults()
+		{
+			SearchResults.Clear();
+
+			NoResultsText.Visibility = System.Windows.Visibility.Visible;
 		}
 
 		private void SearchQueryCallback(IAsyncResult result)
@@ -71,14 +79,20 @@ namespace HackSC_CheckIn
 						{
 							string name = iterator.Value<string>("name");
 
+							// Remove "No Results"
+							NoResultsText.Visibility = System.Windows.Visibility.Collapsed;
 							// Add search result to SearchResults
 							SearchResults.Add(new SearchResult { Name = name });
+						}
+						if(SearchResults.Count == 0)
+						{
+							DisplayNoResults();
 						}
 					});
 				}
 				catch (WebException)
 				{
-					return;
+					DisplayNoResults();
 				}
 			}
 		}

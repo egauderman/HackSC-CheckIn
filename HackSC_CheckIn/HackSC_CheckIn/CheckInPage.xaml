@@ -34,16 +34,24 @@
 
             <ScrollViewer x:Name="SearchResultsScrollViewer">
                 <StackPanel>
-                    <!-- Title -->
-                    <TextBlock Text="Search Users" Style="{StaticResource PhoneTextGroupHeaderStyle}"/>
+                    
+                    <!-- Heading and search box -->
+                    <TextBlock Text="Search Users"
+                               Style="{StaticResource PhoneTextGroupHeaderStyle}"
+                               />
                     <TextBox x:Name="SearchQueryBox"
                              TextChanged="SearchQueryBox_TextChanged"
                              />
                     
-                    <!-- Content -->
-                    <TextBlock Text="SearchResults Begin"/>
+                    <!-- Displayed when there are no results -->
+                    <TextBlock x:Name="NoResultsText"
+                               Text="No results."
+                               Style="{StaticResource EmptyListHeaderStyle}"
+                               Visibility="Collapsed"
+                               />
 
-                    <ItemsControl x:Name="SearchResultsItemsControl" ItemsSource="{Binding}">
+                    <!-- Search results -->
+                    <ItemsControl x:Name="SearchResultsItemsControl">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -60,8 +68,7 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-
-                    <TextBlock Text="SearchResults End"/>
+                    
                 </StackPanel>
             </ScrollViewer>
         </Grid>
