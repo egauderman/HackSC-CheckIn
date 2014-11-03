@@ -28,10 +28,48 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <StackPanel>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0">
                 <TextBlock Text="Search Users" Style="{StaticResource PhoneTextGroupHeaderStyle}"/>
-                <TextBox/>
+                <TextBox x:Name="SearchQueryBox"
+                         TextChanged="SearchQueryBox_TextChanged"
+                         />
             </StackPanel>
+
+            <Grid Grid.Row="1">
+                <ScrollViewer x:Name="SearchResultsScrollViewer">
+                    <StackPanel>
+                        <TextBlock Text="SearchResults Begin"/>
+
+                        <ItemsControl x:Name="SearchResultsItemsControl" ItemsSource="{Binding}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <TextBlock Text="Item"
+                                                   Grid.Row="0"
+                                                   />
+                                        <TextBlock Text="{Binding Name}"
+                                                   Grid.Row="1"
+                                                   Style="{StaticResource PhoneTextNormalStyle}"
+                                                   />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        
+                        <TextBlock Text="SearchResults End"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
         </Grid>
     </Grid>
 
