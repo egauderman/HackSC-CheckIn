@@ -53,14 +53,11 @@
                                             <RowDefinition Height="auto"/>
                                             <RowDefinition Height="auto"/>
                                         </Grid.RowDefinitions>
-                                        
-                                        <TextBlock Text="Item"
-                                                   Grid.Row="0"
-                                                   />
-                                        <TextBlock Text="{Binding Name}"
-                                                   Grid.Row="1"
-                                                   Style="{StaticResource PhoneTextNormalStyle}"
-                                                   />
+
+                                        <Button x:Name="SearchResultButton"
+                                                Content="{Binding Name}"
+                                                Click="SearchResultButton_Click"
+                                                />
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
