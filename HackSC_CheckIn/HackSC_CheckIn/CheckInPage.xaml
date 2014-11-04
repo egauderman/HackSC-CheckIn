@@ -43,6 +43,11 @@
                              TextChanged="SearchQueryBox_TextChanged"
                              />
                     
+                    <!-- Temp to make sure http request works -->
+                    <TextBlock x:Name="TempText"
+                               Text="debug"
+                               />
+                    
                     <!-- Displayed when there are no results -->
                     <TextBlock x:Name="NoResultsText"
                                Text="No results."

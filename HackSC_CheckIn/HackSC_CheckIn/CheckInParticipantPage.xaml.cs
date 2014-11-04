@@ -25,10 +25,5 @@ namespace HackSC_CheckIn
 				PageTitle.DataContext = Person;
 			}
 		}
-
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-
-		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel; // for ObservableCollection<>
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -37,23 +38,39 @@ namespace HackSC_CheckIn
 			if (SearchQueryBox.Text.Length > 0)
 			{
 				// Query the server
-				string searchUri = "http://louise.codejoust.com/hacksc/people.php?q=" + SearchQueryBox.Text;
+				// Temp for testing:
+				// string searchUri = "http://louise.codejoust.com/hacksc/people.php?q=" + SearchQueryBox.Text;
+
+				string searchUri = "http://go.hacksc.com/api/find_reg.json?q=" + SearchQueryBox.Text;
 
 				HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(searchUri);
+
+				// Force http authorization
+				string authInfo = "gauderma@usc.edu:hack1958";
+				authInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(authInfo));
+				request.Headers["Authorization"] = "Basic " + authInfo;
+				
 				request.BeginGetResponse(SearchQueryCallback, request);
 			}
 			else
 			{
-				SearchResults.Clear();
-				NoResultsText.Visibility = System.Windows.Visibility.Collapsed;
+				Dispatcher.BeginInvoke(() =>
+				{
+					SearchResults.Clear();
+
+					NoResultsText.Visibility = System.Windows.Visibility.Collapsed;
+				});
 			}
 		}
 
 		private void DisplayNoResults()
 		{
-			SearchResults.Clear();
+			Dispatcher.BeginInvoke(() =>
+			{
+				SearchResults.Clear();
 
-			NoResultsText.Visibility = System.Windows.Visibility.Visible;
+				NoResultsText.Visibility = System.Windows.Visibility.Visible;
+			});
 		}
 
 		private void SearchQueryCallback(IAsyncResult result)
@@ -71,23 +88,24 @@ namespace HackSC_CheckIn
 					Dispatcher.BeginInvoke(() =>
 					{
 						SearchResults.Clear();
+						TempText.Text = searchResultJsonString.Substring(0, 100);
 
-						// Parse json string
-						JObject jsonObject = JObject.Parse(searchResultJsonString);
-						JArray resultsArray = jsonObject["data"] as JArray;
-						for (JToken iterator = resultsArray.First; iterator != null; iterator = iterator.Next)
-						{
-							string name = iterator.Value<string>("name");
+						//// Parse json string
+						//JObject jsonObject = JObject.Parse(searchResultJsonString);
+						//JArray resultsArray = jsonObject["data"] as JArray;
+						//for (JToken iterator = resultsArray.First; iterator != null; iterator = iterator.Next)
+						//{
+						//	string name = iterator.Value<string>("name");
 
-							// Remove "No Results"
-							NoResultsText.Visibility = System.Windows.Visibility.Collapsed;
-							// Add search result to SearchResults
-							SearchResults.Add(new SearchResult { Name = name });
-						}
-						if(SearchResults.Count == 0)
-						{
-							DisplayNoResults();
-						}
+						//	// Remove "No Results"
+						//	NoResultsText.Visibility = System.Windows.Visibility.Collapsed;
+						//	// Add search result to SearchResults
+						//	SearchResults.Add(new SearchResult { Name = name });
+						//}
+						//if(SearchResults.Count == 0)
+						//{
+						//	DisplayNoResults();
+						//}
 					});
 				}
 				catch (WebException)
@@ -97,7 +115,6 @@ namespace HackSC_CheckIn
 			}
 		}
 
-		private SearchResult _currentPerson;
 		private void SearchResultButton_Click(object sender, RoutedEventArgs e)
 		{
 			(App.Current as App).CheckIn_CurrentPerson = (sender as Button).DataContext as SearchResult;
