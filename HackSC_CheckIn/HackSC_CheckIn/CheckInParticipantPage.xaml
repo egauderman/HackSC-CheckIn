@@ -22,13 +22,38 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="HackSC Check-In" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="PageTitle" Text="{Binding Name}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            
+            <StackPanel>
+                <TextBlock Text="First Name"
+                           Style="{StaticResource PhoneTextSubtleStyle}"
+                           />
+                <TextBlock Text="{Binding FirstName}"
+                           Margin="18,0,0,0"
+                           />
+                <TextBlock Text="Last Name"
+                           Style="{StaticResource PhoneTextSubtleStyle}"
+                           />
+                <TextBlock Text="{Binding LastName}"
+                           Margin="18,0,0,0"
+                           />
+                <TextBlock Text="Email"
+                           Style="{StaticResource PhoneTextSubtleStyle}"
+                           />
+                <TextBlock Text="{Binding Email}"
+                           Margin="18,0,0,0"
+                           />
+                <TextBlock Text="ID"
+                           Style="{StaticResource PhoneTextSubtleStyle}"
+                           />
+                <TextBlock Text="{Binding Id}"
+                           Margin="18,0,0,0"
+                           />
+            </StackPanel>
         </Grid>
     </Grid>
 

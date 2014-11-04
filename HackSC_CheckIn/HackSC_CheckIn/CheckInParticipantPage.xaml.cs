@@ -20,10 +20,13 @@ namespace HackSC_CheckIn
 
 			Person = (App.Current as App).CheckIn_CurrentPerson;
 
-			if (Person != null)
+			if (Person == null)
 			{
-				PageTitle.DataContext = Person;
+				NavigationService.GoBack();
+				return;
 			}
+			
+			LayoutRoot.DataContext = Person;
 		}
 	}
 }

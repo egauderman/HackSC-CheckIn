@@ -40,13 +40,10 @@
                                Style="{StaticResource PhoneTextGroupHeaderStyle}"
                                />
                     <TextBox x:Name="SearchQueryBox"
-                             TextChanged="SearchQueryBox_TextChanged"
+                             InputScope="Search"
+                             LostFocus="SearchQueryBox_LostFocus"
+                             KeyUp="SearchQueryBox_KeyUp"
                              />
-                    
-                    <!-- Temp to make sure http request works -->
-                    <TextBlock x:Name="TempText"
-                               Text="debug"
-                               />
                     
                     <!-- Displayed when there are no results -->
                     <TextBlock x:Name="NoResultsText"
@@ -66,7 +63,7 @@
                                     </Grid.RowDefinitions>
 
                                     <Button x:Name="SearchResultButton"
-                                            Content="{Binding Name}"
+                                            Content="{Binding ButtonText}"
                                             Click="SearchResultButton_Click"
                                             />
                                 </Grid>

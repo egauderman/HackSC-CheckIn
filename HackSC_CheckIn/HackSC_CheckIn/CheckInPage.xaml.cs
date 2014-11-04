@@ -17,7 +17,24 @@ namespace HackSC_CheckIn
 {
 	public class SearchResult
 	{
-		public string Name { get; set; }
+		public string Id { get; set; }
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+		public string Email { get; set; }
+		public string Name
+		{
+			get
+			{
+				return FirstName + " " + LastName;
+			}
+		}
+		public string ButtonText
+		{
+			get
+			{
+				return FirstName + " " + LastName + ", " + Email;
+			}
+		}
 	}
 
 	public partial class CheckInPage : PhoneApplicationPage
@@ -33,13 +50,12 @@ namespace HackSC_CheckIn
 			SearchResultsItemsControl.ItemsSource = SearchResults;
 		}
 
-		private void SearchQueryBox_TextChanged(object sender, TextChangedEventArgs e)
+		private void SearchQueryBox_LostFocus(object sender, RoutedEventArgs e)
 		{
 			if (SearchQueryBox.Text.Length > 0)
 			{
 				// Query the server
-				// Temp for testing:
-				// string searchUri = "http://louise.codejoust.com/hacksc/people.php?q=" + SearchQueryBox.Text;
+				// Old url: http://louise.codejoust.com/hacksc/people.php?q=
 
 				string searchUri = "http://go.hacksc.com/api/find_reg.json?q=" + SearchQueryBox.Text;
 
@@ -88,24 +104,31 @@ namespace HackSC_CheckIn
 					Dispatcher.BeginInvoke(() =>
 					{
 						SearchResults.Clear();
-						TempText.Text = searchResultJsonString.Substring(0, 100);
 
-						//// Parse json string
-						//JObject jsonObject = JObject.Parse(searchResultJsonString);
-						//JArray resultsArray = jsonObject["data"] as JArray;
-						//for (JToken iterator = resultsArray.First; iterator != null; iterator = iterator.Next)
-						//{
-						//	string name = iterator.Value<string>("name");
+						// Parse json string
+						JObject jsonObject = JObject.Parse(searchResultJsonString);
+						JArray resultsArray = jsonObject["registrations"] as JArray;
+						for (JToken iterator = resultsArray.First; iterator != null; iterator = iterator.Next)
+						{
+							SearchResult person = new SearchResult();
+							person.Id = iterator.Value<string>("id");
+							person.FirstName = iterator.Value<string>("first_name");
+							person.LastName = iterator.Value<string>("last_name");
+							person.Email = iterator.Value<string>("email");
 
-						//	// Remove "No Results"
-						//	NoResultsText.Visibility = System.Windows.Visibility.Collapsed;
-						//	// Add search result to SearchResults
-						//	SearchResults.Add(new SearchResult { Name = name });
-						//}
-						//if(SearchResults.Count == 0)
-						//{
-						//	DisplayNoResults();
-						//}
+							// Add search result to SearchResults
+							SearchResults.Add(person);
+						}
+
+						// Remove "No Results if needed"
+						if (SearchResults.Count == 0)
+						{
+							DisplayNoResults();
+						}
+						else
+						{
+							NoResultsText.Visibility = System.Windows.Visibility.Collapsed;
+						}
 					});
 				}
 				catch (WebException)
@@ -120,6 +143,15 @@ namespace HackSC_CheckIn
 			(App.Current as App).CheckIn_CurrentPerson = (sender as Button).DataContext as SearchResult;
 
 			NavigationService.Navigate(new Uri("/CheckInParticipantPage.xaml", UriKind.Relative));
+		}
+
+		private void SearchQueryBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+		{
+			if(e.Key == System.Windows.Input.Key.Enter)
+			{
+				// Make the search box lose focus
+				this.Focus();
+			}
 		}
 	}
 }
