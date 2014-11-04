@@ -29,5 +29,13 @@ namespace HackSC_CheckIn
 			LayoutRoot.DataContext = Person;
 			HasWaiverCheckbox.DataContext = this;
 		}
+
+		private void CheckInButton_Click(object sender, RoutedEventArgs e)
+		{
+			CheckInButton.IsEnabled = false;
+			HasWaiverCheckbox.IsEnabled = false;
+			WaitingText.Visibility = System.Windows.Visibility.Visible;
+			// Make network post request, set WaitingText.Visibility to Visible, in callback set it
+		}
 	}
 }

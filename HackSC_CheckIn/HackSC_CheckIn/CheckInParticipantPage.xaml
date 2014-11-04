@@ -103,9 +103,11 @@
                 <Button x:Name="CheckInButton"
                         Content="Check In"
                         IsEnabled="{Binding ElementName=HasWaiverCheckbox, Path=IsChecked}"
+                        Click="CheckInButton_Click"
                         />
                 
                 <TextBlock x:Name="WaitingText"
+                           Text="One second..."
                            Visibility="Collapsed"
                            Style="{StaticResource EmptyListHeaderStyle}"
                            />

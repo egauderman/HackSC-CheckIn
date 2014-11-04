@@ -55,7 +55,8 @@ namespace HackSC_CheckIn
 
 		private void SearchQueryBox_LostFocus(object sender, RoutedEventArgs e)
 		{
-			if (SearchQueryBox.Text.Length > 0)
+			// Make sure search box has at least 2 non-whitespace characters
+			if (SearchQueryBox.Text.Length - SearchQueryBox.Text.Count(Char.IsWhiteSpace) > 1)
 			{
 				// Query the server
 				// Old url: http://louise.codejoust.com/hacksc/people.php?q=
