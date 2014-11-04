@@ -51,6 +51,14 @@
                                Style="{StaticResource EmptyListHeaderStyle}"
                                Visibility="Collapsed"
                                />
+                    
+                    <!-- Displayed while waiting for HTTP request response -->
+                    <TextBlock x:Name="WaitingText"
+                               Text="One second..."
+                               Style="{StaticResource EmptyListHeaderStyle}"
+                               Visibility="Collapsed"
+                               HorizontalAlignment="Center"
+                               />
 
                     <!-- Search results -->
                     <ItemsControl x:Name="SearchResultsItemsControl">

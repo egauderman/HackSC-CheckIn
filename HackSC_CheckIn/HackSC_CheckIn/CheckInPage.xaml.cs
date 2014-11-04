@@ -45,9 +45,12 @@ namespace HackSC_CheckIn
 		{
 			InitializeComponent();
 
-			//SearchResultsItemsControl.DataContext = SearchResults;
+			// SearchResultsItemsControl.DataContext = SearchResults;
 
 			SearchResultsItemsControl.ItemsSource = SearchResults;
+
+			// Initialize display state
+			DisplayBlank();
 		}
 
 		private void SearchQueryBox_LostFocus(object sender, RoutedEventArgs e)
@@ -65,28 +68,66 @@ namespace HackSC_CheckIn
 				string authInfo = "gauderma@usc.edu:hack1958";
 				authInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(authInfo));
 				request.Headers["Authorization"] = "Basic " + authInfo;
-				
+
 				request.BeginGetResponse(SearchQueryCallback, request);
+
+				// Show "One second" and disable text box until request is received
+				Dispatcher.BeginInvoke(() =>
+				{
+					DisplayWaitingText();
+				});
 			}
 			else
 			{
+				// Textbox is blank; clear the screen
 				Dispatcher.BeginInvoke(() =>
 				{
-					SearchResults.Clear();
-
-					NoResultsText.Visibility = System.Windows.Visibility.Collapsed;
+					DisplayBlank();
 				});
 			}
 		}
 
+		// The initial state of the search page
+		private void DisplayBlank()
+		{
+			SearchResults.Clear();
+
+			WaitingText.Visibility = System.Windows.Visibility.Collapsed;
+
+			NoResultsText.Visibility = System.Windows.Visibility.Collapsed;
+
+			SearchQueryBox.IsEnabled = true;
+		}
+
 		private void DisplayNoResults()
 		{
-			Dispatcher.BeginInvoke(() =>
-			{
-				SearchResults.Clear();
+			SearchResults.Clear();
 
-				NoResultsText.Visibility = System.Windows.Visibility.Visible;
-			});
+			WaitingText.Visibility = System.Windows.Visibility.Collapsed;
+
+			NoResultsText.Visibility = System.Windows.Visibility.Visible;
+
+			SearchQueryBox.IsEnabled = true;
+		}
+
+		private void DisplayWaitingText()
+		{
+			SearchResults.Clear();
+
+			NoResultsText.Visibility = System.Windows.Visibility.Collapsed;
+
+			WaitingText.Visibility = System.Windows.Visibility.Visible;
+
+			SearchQueryBox.IsEnabled = false;
+		}
+
+		private void PrepareDisplaySearchResults()
+		{
+			NoResultsText.Visibility = System.Windows.Visibility.Collapsed;
+
+			WaitingText.Visibility = System.Windows.Visibility.Collapsed;
+
+			SearchQueryBox.IsEnabled = true;
 		}
 
 		private void SearchQueryCallback(IAsyncResult result)
@@ -94,16 +135,17 @@ namespace HackSC_CheckIn
 			HttpWebRequest request = result.AsyncState as HttpWebRequest;
 			if (request != null)
 			{
-				try
+				Dispatcher.BeginInvoke(() =>
 				{
-					// Get json string
-					WebResponse response = request.EndGetResponse(result);
-					StreamReader reader = new StreamReader(response.GetResponseStream());
-					string searchResultJsonString = reader.ReadToEnd();
-
-					Dispatcher.BeginInvoke(() =>
+					try
 					{
+						// Get json string
+						WebResponse response = request.EndGetResponse(result);
+						StreamReader reader = new StreamReader(response.GetResponseStream());
+						string searchResultJsonString = reader.ReadToEnd();
 						SearchResults.Clear();
+
+						PrepareDisplaySearchResults();
 
 						// Parse json string
 						JObject jsonObject = JObject.Parse(searchResultJsonString);
@@ -120,21 +162,17 @@ namespace HackSC_CheckIn
 							SearchResults.Add(person);
 						}
 
-						// Remove "No Results if needed"
+						// Choose display state
 						if (SearchResults.Count == 0)
 						{
 							DisplayNoResults();
 						}
-						else
-						{
-							NoResultsText.Visibility = System.Windows.Visibility.Collapsed;
-						}
-					});
-				}
-				catch (WebException)
-				{
-					DisplayNoResults();
-				}
+					}
+					catch (WebException)
+					{
+						DisplayNoResults();
+					}
+				});
 			}
 		}
 

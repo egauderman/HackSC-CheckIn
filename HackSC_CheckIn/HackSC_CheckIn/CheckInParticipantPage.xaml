@@ -12,6 +12,15 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
+    
+    <phone:PhoneApplicationPage.Resources>
+        <Style TargetType="TextBlock"
+               x:Key="MyColumnStyle">
+            <Style.Setters>
+                <Setter Property="FontSize" Value="26"/>
+            </Style.Setters>
+        </Style>
+    </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -29,6 +38,7 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
+                <!-- Table for displaying user data -->
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -40,48 +50,65 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style x:Key="FirstColumnStyle" TargetType="TextBlock"
+                               BasedOn="{StaticResource PhoneTextSubtleStyle}">
+                            <Setter Property="Grid.Column" Value="0"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                        </Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="28"/>
+                            <Setter Property="Grid.Column" Value="1"/>
+                            <Setter Property="FontFamily" Value="Segoe WP Semilight"/>
+                        </Style>
+                    </Grid.Resources>
+                    
                     <TextBlock Text="First Name"
-                               Style="{StaticResource PhoneTextSubtleStyle}"
                                Grid.Row="0"
-                               Grid.Column="0"
+                               Style="{StaticResource FirstColumnStyle}"
                                />
                     <TextBlock Text="{Binding FirstName}"
                                Grid.Row="0"
-                               Grid.Column="1"
                                />
                     <TextBlock Text="Last Name"
-                               Style="{StaticResource PhoneTextSubtleStyle}"
                                Grid.Row="1"
-                               Grid.Column="0"
+                               Style="{StaticResource FirstColumnStyle}"
                                />
                     <TextBlock Text="{Binding LastName}"
                                Grid.Row="1"
-                               Grid.Column="1"
                                />
                     <TextBlock Text="Email"
-                               Style="{StaticResource PhoneTextSubtleStyle}"
                                Grid.Row="2"
-                               Grid.Column="0"
+                               Style="{StaticResource FirstColumnStyle}"
                                />
                     <TextBlock Text="{Binding Email}"
                                Grid.Row="2"
-                               Grid.Column="1"
                                />
                     <TextBlock Text="ID"
-                               Style="{StaticResource PhoneTextSubtleStyle}"
                                Grid.Row="3"
-                               Grid.Column="0"
+                               Style="{StaticResource FirstColumnStyle}"
                                />
                     <TextBlock Text="{Binding Id}"
                                Grid.Row="3"
-                               Grid.Column="1"
                                />
                 </Grid>
 
                 <CheckBox x:Name="HasWaiverCheckbox"
                           Content="Student filled out waiver"
                           IsChecked="{Binding HasWaiver}"
+                          Margin="0,48"
                           />
+                
+                <Button x:Name="CheckInButton"
+                        Content="Check In"
+                        IsEnabled="{Binding ElementName=HasWaiverCheckbox, Path=IsChecked}"
+                        />
+                
+                <TextBlock x:Name="WaitingText"
+                           Visibility="Collapsed"
+                           Style="{StaticResource EmptyListHeaderStyle}"
+                           />
             </StackPanel>
         </Grid>
     </Grid>
