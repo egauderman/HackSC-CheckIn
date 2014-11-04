@@ -27,6 +27,7 @@ namespace HackSC_CheckIn
 			}
 			
 			LayoutRoot.DataContext = Person;
+			HasWaiverCheckbox.DataContext = this;
 		}
 	}
 }
