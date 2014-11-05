@@ -52,6 +52,12 @@ namespace HackSC_CheckIn
 			base.OnNavigatedTo(e);
 
 			// Begin web request for events, show WaitingText
+			NetworkQuerier.GetEventList(EventListReceived);
+		}
+
+		private void EventListReceived(IAsyncResult result)
+		{
+			
 		}
 
 		private void EventButton_Click(object sender, RoutedEventArgs e)
