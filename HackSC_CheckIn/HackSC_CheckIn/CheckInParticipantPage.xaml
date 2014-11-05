@@ -32,7 +32,15 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="HackSC Check-In" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="{Binding Name}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <ScrollViewer Margin="9,-7,0,0"
+                          HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Disabled"
+                          >
+                <TextBlock x:Name="PageTitle"
+                           Text="{Binding Name}"
+                           Style="{StaticResource PhoneTextTitle1Style}"
+                           />
+            </ScrollViewer>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
