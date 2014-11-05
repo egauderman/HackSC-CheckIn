@@ -59,7 +59,6 @@ namespace HackSC_CheckIn
 			if (SearchQueryBox.Text.Length - SearchQueryBox.Text.Count(Char.IsWhiteSpace) > 1)
 			{
 				// Query the server
-				// Old url: http://louise.codejoust.com/hacksc/people.php?q=
 
 				string searchUri = "http://go.hacksc.com/api/find_reg.json?q=" + SearchQueryBox.Text;
 
