@@ -49,11 +49,6 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-
                                 <Button x:Name="EventButton"
                                         Content="{Binding ButtonText}"
                                         Click="EventButton_Click"

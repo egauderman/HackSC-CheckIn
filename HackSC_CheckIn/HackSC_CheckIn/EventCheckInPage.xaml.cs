@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel; // for ObservableCollection<>
 using System.Linq;
 using System.Net;
 using System.Windows;
@@ -13,6 +14,8 @@ namespace HackSC_CheckIn
 	public partial class EventCheckInPage : PhoneApplicationPage
 	{
 		HackathonEvent Event { get; set; }
+
+		ObservableCollection<string> Hackers = new ObservableCollection<string>();
 
 		public EventCheckInPage()
 		{

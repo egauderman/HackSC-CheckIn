@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq; // JSON
 
 
 namespace HackSC_CheckIn
@@ -35,6 +35,8 @@ namespace HackSC_CheckIn
 				return FirstName + " " + LastName + ", " + Email;
 			}
 		}
+
+		public string ProfileUrl { get; set; }
 	}
 
 	public partial class CheckInPage : PhoneApplicationPage
@@ -59,8 +61,10 @@ namespace HackSC_CheckIn
 			if (SearchQueryBox.Text.Length - SearchQueryBox.Text.Count(Char.IsWhiteSpace) > 1)
 			{
 				// Query the server
+				string query = SearchQueryBox.Text;
+				query = query.Replace(" ", "%20");
 
-				NetworkQuerier.GetUserList(SearchQueryBox.Text, SearchQueryCallback);
+				NetworkQuerier.GetUserList(query, SearchQueryCallback);
 
 				// Show "One second" and disable text box until request is received
 				Dispatcher.BeginInvoke(() =>
@@ -77,6 +81,8 @@ namespace HackSC_CheckIn
 				});
 			}
 		}
+
+		#region Display states
 
 		// The initial state of the search page
 		private void DisplayBlank()
@@ -121,30 +127,35 @@ namespace HackSC_CheckIn
 			SearchQueryBox.IsEnabled = true;
 		}
 
+		#endregion Display states
+
 		private void SearchQueryCallback(IAsyncResult result)
 		{
             JObject jsonObject = result.AsyncState as JObject;
-				Dispatcher.BeginInvoke(() =>
+			Dispatcher.BeginInvoke(() =>
+			{
+				// Set display state to be ready to display search results
+				PrepareDisplaySearchResults();
+
+				JArray resultsArray = jsonObject["registrations"] as JArray;
+				for (JToken iterator = resultsArray.First; iterator != null; iterator = iterator.Next)
 				{
-					JArray resultsArray = jsonObject["registrations"] as JArray;
-						for (JToken iterator = resultsArray.First; iterator != null; iterator = iterator.Next)
-						{
-							SearchResult person = new SearchResult();
-							person.Id = iterator.Value<string>("id");
-							person.FirstName = iterator.Value<string>("first_name");
-							person.LastName = iterator.Value<string>("last_name");
-							person.Email = iterator.Value<string>("email");
+					SearchResult person = new SearchResult();
+					person.Id = iterator.Value<string>("id");
+					person.FirstName = iterator.Value<string>("first_name");
+					person.LastName = iterator.Value<string>("last_name");
+					person.Email = iterator.Value<string>("email");
 
-							// Add search result to SearchResults
-							SearchResults.Add(person);
-						}
+					// Add search result to SearchResults
+					SearchResults.Add(person);
+				}
 
-						// Choose display state
-						if (SearchResults.Count == 0)
-						{
-							DisplayNoResults();
-						}
-				});
+				// Display No Results if needed
+				if (SearchResults.Count == 0)
+				{
+					DisplayNoResults();
+				}
+			});
 		}
 
 		private void SearchResultButton_Click(object sender, RoutedEventArgs e)

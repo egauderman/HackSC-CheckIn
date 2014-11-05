@@ -19,6 +19,8 @@ namespace HackSC_CheckIn
 		private const string NoNFCInstructionText = "This phone doesn't have NFC enabled. Press Done";
 		private const string SuccessfulWriteInstructionText = "NFC write successful";
 
+		private SearchResult Person;
+
 		public NFCWritePage()
 		{
 			InitializeComponent();
@@ -30,6 +32,15 @@ namespace HackSC_CheckIn
 			{
 				InstructionText.Text = NoNFCInstructionText;
 				DoneButton.IsEnabled = true;
+			}
+
+			Person = (App.Current as App).CheckIn_CurrentPerson;
+
+			// Ensure that current person isn't null
+			if(Person == null)
+			{
+				NavigationService.GoBack();
+				return;
 			}
 		}
 
@@ -48,27 +59,32 @@ namespace HackSC_CheckIn
 
 			if(ProximityDevice.GetDefault() != null)
 			{
-				////// Writes URL
-				//// Set data to write
-				//var dataWriter = new DataWriter() { UnicodeEncoding = UnicodeEncoding.Utf16LE };
-				//dataWriter.WriteString("http://go.hacksc.com/p/" + (App.Current as App).CheckIn_CurrentPerson.Id);
-
-				//// Begin write
-				//ProximityDevice.GetDefault().PublishBinaryMessage(
-				//	"WindowsUri:WriteTag",
-				//	dataWriter.DetachBuffer(),
-				//	NFCWriteFinish);
-
-				//// Writes ID
+				//// Writes URL
 				// Set data to write
-				var dataWriter = new DataWriter() { UnicodeEncoding = UnicodeEncoding.Utf8 };
-				dataWriter.WriteString("id=" + (App.Current as App).CheckIn_CurrentPerson.Id);
+				var dataWriter = new DataWriter() { UnicodeEncoding = UnicodeEncoding.Utf16LE };
+				dataWriter.WriteString(
+					Person.ProfileUrl +
+					"?id=" + Person.Id +
+					"&first_name=" + Person.FirstName +
+					"&last_name=" + Person.LastName
+					);
 
 				// Begin write
 				ProximityDevice.GetDefault().PublishBinaryMessage(
-					"Windows:WriteTag.HackSC_ID",
+					"WindowsUri:WriteTag",
 					dataWriter.DetachBuffer(),
 					NFCWriteFinish);
+
+				////// Writes ID
+				//// Set data to write
+				//var dataWriter = new DataWriter() { UnicodeEncoding = UnicodeEncoding.Utf8 };
+				//dataWriter.WriteString("id=" + (App.Current as App).CheckIn_CurrentPerson.Id);
+
+				//// Begin write
+				//ProximityDevice.GetDefault().PublishBinaryMessage(
+				//	"Windows:WriteTag.HackSC_ID",
+				//	dataWriter.DetachBuffer(),
+				//	NFCWriteFinish);
 			}
 		}
 
