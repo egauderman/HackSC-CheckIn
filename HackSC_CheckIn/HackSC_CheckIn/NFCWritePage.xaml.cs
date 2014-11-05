@@ -19,7 +19,7 @@ namespace HackSC_CheckIn
 		private const string NoNFCInstructionText = "This phone doesn't have NFC enabled. Press Done";
 		private const string SuccessfulWriteInstructionText = "NFC write successful";
 
-		private SearchResult Person;
+		private Hacker Person;
 
 		public NFCWritePage()
 		{

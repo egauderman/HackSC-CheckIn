@@ -14,21 +14,6 @@ using Newtonsoft.Json.Linq; // JSON
 
 namespace HackSC_CheckIn
 {
-	public class HackathonEvent
-	{
-		public string Id { get; set; }
-		public string Title { get; set; }
-		public string Description { get; set; }
-
-		public string ButtonText
-		{
-			get
-			{
-				return Title;
-			}
-		}
-	}
-
 	public partial class ChooseEventPage : PhoneApplicationPage
 	{
 		public ObservableCollection<HackathonEvent> HackathonEvents = new ObservableCollection<HackathonEvent>();

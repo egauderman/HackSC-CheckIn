@@ -15,33 +15,9 @@ using Newtonsoft.Json.Linq; // JSON
 
 namespace HackSC_CheckIn
 {
-	public class SearchResult
-	{
-		public string Id { get; set; }
-		public string FirstName { get; set; }
-		public string LastName { get; set; }
-		public string Email { get; set; }
-		public string Name
-		{
-			get
-			{
-				return FirstName + " " + LastName;
-			}
-		}
-		public string ButtonText
-		{
-			get
-			{
-				return FirstName + " " + LastName + ", " + Email;
-			}
-		}
-
-		public string ProfileUrl { get; set; }
-	}
-
 	public partial class CheckInPage : PhoneApplicationPage
 	{
-		public ObservableCollection<SearchResult> SearchResults = new ObservableCollection<SearchResult>();
+		public ObservableCollection<Hacker> SearchResults = new ObservableCollection<Hacker>();
 
 		public CheckInPage()
 		{
@@ -140,7 +116,7 @@ namespace HackSC_CheckIn
 				JArray resultsArray = jsonObject["registrations"] as JArray;
 				for (JToken iterator = resultsArray.First; iterator != null; iterator = iterator.Next)
 				{
-					SearchResult person = new SearchResult();
+					Hacker person = new Hacker();
 					person.Id = iterator.Value<string>("id");
 					person.FirstName = iterator.Value<string>("first_name");
 					person.LastName = iterator.Value<string>("last_name");
@@ -160,7 +136,7 @@ namespace HackSC_CheckIn
 
 		private void SearchResultButton_Click(object sender, RoutedEventArgs e)
 		{
-			(App.Current as App).CheckIn_CurrentPerson = (sender as Button).DataContext as SearchResult;
+			(App.Current as App).CheckIn_CurrentPerson = (sender as Button).DataContext as Hacker;
 
 			NavigationService.Navigate(new Uri("/CheckInParticipantPage.xaml", UriKind.Relative));
 		}

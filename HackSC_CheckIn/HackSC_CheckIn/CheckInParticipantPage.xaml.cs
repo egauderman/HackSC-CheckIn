@@ -13,7 +13,7 @@ namespace HackSC_CheckIn
 {
 	public partial class CheckInParticipantPage : PhoneApplicationPage
 	{
-		public SearchResult Person { get; set; }
+		public Hacker Person { get; set; }
 
 		public CheckInParticipantPage()
 		{
