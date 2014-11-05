@@ -125,6 +125,7 @@ namespace HackSC_CheckIn
 
 		public static void GetUserList(string query, AsyncCallback callback)
 		{
+			query = HttpUtility.UrlEncode(query);
 			StartRequest((BASE + "find_reg.json?q=" + query), callback);
 		}
 

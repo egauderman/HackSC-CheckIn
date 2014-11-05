@@ -36,11 +36,8 @@ namespace HackSC_CheckIn
 			// Make sure search box has at least 2 non-whitespace characters
 			if (SearchQueryBox.Text.Length - SearchQueryBox.Text.Count(Char.IsWhiteSpace) > 1)
 			{
-				// Query the server
-				string query = SearchQueryBox.Text;
-				query = query.Replace(" ", "%20");
-
-				NetworkQuerier.GetUserList(query, SearchQueryCallback);
+				// Start HTTP request
+				NetworkQuerier.GetUserList(SearchQueryBox.Text, SearchQueryCallback);
 
 				// Show "One second" and disable text box until request is received
 				Dispatcher.BeginInvoke(() =>
