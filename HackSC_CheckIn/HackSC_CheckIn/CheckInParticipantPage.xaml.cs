@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Newtonsoft.Json.Linq;
 
 namespace HackSC_CheckIn
 {
@@ -40,12 +41,15 @@ namespace HackSC_CheckIn
 			// TEMP: following network request is temporarily commented out; just go straight to NFCWritePage
 
 			// Make network post request
-			//NetworkQuerier.CheckInUser(Person.Id,
-			//	(IAsyncResult result) =>
-			//	{
-					NavigationService.Navigate(new Uri("/NFCWritePage.xaml", UriKind.Relative));
-			//	}
-			//);
+			NetworkQuerier.CheckInUser(Person.Id,
+				(IAsyncResult result) =>
+				{
+                    JObject jres = (JObject)result.AsyncState;
+                    string profileUrl = jres["profile"].Value<string>();
+
+					//NavigationService.Navigate(new Uri("/NFCWritePage.xaml", UriKind.Relative));
+				}
+			);
 		}
 	}
 }

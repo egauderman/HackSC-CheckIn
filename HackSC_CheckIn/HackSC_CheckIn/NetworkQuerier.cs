@@ -53,33 +53,35 @@ namespace HackSC_CheckIn
 
 			AsyncCallback resultcb = (IAsyncResult resp) =>
 			{
-				HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(resp);
+                HttpWebRequest irequest = (HttpWebRequest)resp.AsyncState;
+				HttpWebResponse response = (HttpWebResponse)irequest.EndGetResponse(resp);
 				if (response.StatusCode == HttpStatusCode.OK)
 				{
 					string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
 					JObject jsonObject = JObject.Parse(responseString);
 					MyAsyncResult async_res = new MyAsyncResult(jsonObject);
-					finalCallback.BeginInvoke(async_res, finalCallback, null);
+					finalCallback(async_res);
 				}
 				else
 				{
 					// throw up error message.
-
+                    
 				}
 			};
 
 			if (postBody != null)
 			{
+                request.Method = "POST";
 				request.BeginGetRequestStream((IAsyncResult async_res) =>
 				{
 					HttpWebRequest webRequest = (HttpWebRequest)async_res.AsyncState;
 					Stream postStream = webRequest.EndGetRequestStream(async_res);
 					byte[] postData = Encoding.UTF8.GetBytes(postBody);
 					postStream.Write(postData, 0, postData.Length);
-					//postStream.Close();
+                    postStream.Close();
 
 					// Get the response.
-					webRequest.BeginGetResponse(resultcb, webRequest);
+					webRequest.BeginGetResponse(new AsyncCallback(resultcb), webRequest);
 
 				}, request);
 			}

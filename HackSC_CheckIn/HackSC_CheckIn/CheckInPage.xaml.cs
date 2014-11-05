@@ -60,16 +60,7 @@ namespace HackSC_CheckIn
 			{
 				// Query the server
 
-				string searchUri = "http://go.hacksc.com/api/find_reg.json?q=" + SearchQueryBox.Text;
-
-				HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(searchUri);
-
-				// Force http authorization
-				string authInfo = "gauderma@usc.edu:hack1958";
-				authInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(authInfo));
-				request.Headers["Authorization"] = "Basic " + authInfo;
-
-				request.BeginGetResponse(SearchQueryCallback, request);
+				NetworkQuerier.GetUserList(SearchQueryBox.Text, SearchQueryCallback);
 
 				// Show "One second" and disable text box until request is received
 				Dispatcher.BeginInvoke(() =>
@@ -132,24 +123,10 @@ namespace HackSC_CheckIn
 
 		private void SearchQueryCallback(IAsyncResult result)
 		{
-			HttpWebRequest request = result.AsyncState as HttpWebRequest;
-			if (request != null)
-			{
+            JObject jsonObject = result.AsyncState as JObject;
 				Dispatcher.BeginInvoke(() =>
 				{
-					try
-					{
-						// Get json string
-						WebResponse response = request.EndGetResponse(result);
-						StreamReader reader = new StreamReader(response.GetResponseStream());
-						string searchResultJsonString = reader.ReadToEnd();
-						SearchResults.Clear();
-
-						PrepareDisplaySearchResults();
-
-						// Parse json string
-						JObject jsonObject = JObject.Parse(searchResultJsonString);
-						JArray resultsArray = jsonObject["registrations"] as JArray;
+					JArray resultsArray = jsonObject["registrations"] as JArray;
 						for (JToken iterator = resultsArray.First; iterator != null; iterator = iterator.Next)
 						{
 							SearchResult person = new SearchResult();
@@ -167,13 +144,7 @@ namespace HackSC_CheckIn
 						{
 							DisplayNoResults();
 						}
-					}
-					catch (WebException)
-					{
-						DisplayNoResults();
-					}
 				});
-			}
 		}
 
 		private void SearchResultButton_Click(object sender, RoutedEventArgs e)

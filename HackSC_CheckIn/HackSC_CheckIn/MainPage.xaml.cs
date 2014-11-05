@@ -17,6 +17,7 @@ namespace HackSC_CheckIn
 		public MainPage()
 		{
 			InitializeComponent();
+            NetworkQuerier.SetLoginInformation("gauderma@usc.edu", "hack1958");
 		}
 
 		private void CheckInPageButton_Click(object sender, RoutedEventArgs e)
