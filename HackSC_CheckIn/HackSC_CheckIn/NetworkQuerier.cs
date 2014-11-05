@@ -136,7 +136,7 @@ namespace HackSC_CheckIn
 
 		public static void GetEventList(AsyncCallback callback)
 		{
-			StartRequest((BASE + "events"), callback);
+			StartRequest((BASE + "events.json"), callback);
 		}
 
 		public static void GetEventInfo(string eventId, AsyncCallback callback)
