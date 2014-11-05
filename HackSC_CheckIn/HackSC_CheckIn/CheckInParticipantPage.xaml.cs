@@ -20,6 +20,7 @@ namespace HackSC_CheckIn
 
 			Person = (App.Current as App).CheckIn_CurrentPerson;
 
+			// Ensure that Person is a valid SearchResult
 			if (Person == null)
 			{
 				NavigationService.GoBack();
@@ -35,7 +36,14 @@ namespace HackSC_CheckIn
 			CheckInButton.IsEnabled = false;
 			HasWaiverCheckbox.IsEnabled = false;
 			WaitingText.Visibility = System.Windows.Visibility.Visible;
-			// Make network post request, set WaitingText.Visibility to Visible, in callback set it
+
+			// Make network post request
+			NetworkQuerier.CheckInUser(Person.Id,
+				(IAsyncResult result) =>
+				{
+					NavigationService.Navigate(new Uri("/NFCWritePage.xaml", UriKind.Relative));
+				}
+			);
 		}
 	}
 }

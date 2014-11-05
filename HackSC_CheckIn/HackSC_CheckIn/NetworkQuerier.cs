@@ -126,9 +126,9 @@ namespace HackSC_CheckIn
 			StartRequest((BASE + "find_reg.json?q=" + query), callback);
 		}
 
-		public static void CheckInUser(string userId, bool waiver, AsyncCallback callback)
+		public static void CheckInUser(string userId, AsyncCallback callback)
 		{
-			var postData = "id=" + userId + "&has_experience=1&has_waiver=" + (waiver ? "1" : "0");
+			var postData = "id=" + userId + "&has_experience=1&has_waiver=1"; // + (waiver ? "1" : "0");
 			StartRequest((BASE + "mark_reg"), callback, postData);
 		}
 
