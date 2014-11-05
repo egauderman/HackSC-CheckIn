@@ -37,6 +37,7 @@ namespace HackSC_CheckIn
 			if (SearchQueryBox.Text.Length - SearchQueryBox.Text.Count(Char.IsWhiteSpace) > 1)
 			{
 				// Start HTTP request
+				// note: NetworkQuerier.GetUserList will URLEncode the query
 				NetworkQuerier.GetUserList(SearchQueryBox.Text, SearchQueryCallback);
 
 				// Show "One second" and disable text box until request is received
