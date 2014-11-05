@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using Windows.Networking.Proximity;
+using Windows.Networking.Proximity; // NFC
 using Windows.Storage.Streams; // NFC
 using Microsoft.Devices; // Vibrate
 
