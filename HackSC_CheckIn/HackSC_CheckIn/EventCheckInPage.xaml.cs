@@ -91,16 +91,22 @@ namespace HackSC_CheckIn
 				{
 					uriString = uriString.Remove(uriString.Length - 1);
 				}
-				Uri uri = new Uri(uriString);
-				string query = uri.Query;
+				string query = uriString.Split('?')[1];
 
+				string[] queryArray = query.Split('&');
+				Dictionary<string, string> queryDict = new Dictionary<string, string>();
 
+				foreach(string s in queryArray)
+				{
+					string[] split = s.Split('=');
+					queryDict.Add(split[0], split[1]);
+				}
 
 				_currentHacker = new Hacker
 				{
-					Id = query.Substring(query.IndexOf("id=")+3, query.IndexOf("&first_name=") - (query.IndexOf("id=")+3)),
-					FirstName = query.Substring(query.IndexOf("&first_name") + 12, query.IndexOf("&last_name=") - (query.IndexOf("&first_name") + 12)),
-					LastName = query.Substring(query.IndexOf("&last_name=") + 11, query.Length - (query.IndexOf("&last_name=") + 11))
+					Id = queryDict["id"],
+					FirstName = queryDict["first_name"],
+					LastName = queryDict["last_name"]
 				};
 
 				NetworkQuerier.CheckInForEvent(_currentHacker.Id, Event.Id, EventCheckIn_Callback);
