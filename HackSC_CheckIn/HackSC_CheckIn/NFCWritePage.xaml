@@ -34,14 +34,13 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
                 <TextBlock x:Name="InstructionText"
-                           Text="Touch phone to card..."
                            Style="{StaticResource PhoneTextTitle2Style}"
                            TextWrapping="Wrap"
                            Margin="0,48"
                            />
                 <Button x:Name="DoneButton"
                         Content="Done"
-                        IsEnabled="True"
+                        IsEnabled="False"
                         Click="DoneButton_Click"
                         />
             </StackPanel>

@@ -37,13 +37,15 @@ namespace HackSC_CheckIn
 			HasWaiverCheckbox.IsEnabled = false;
 			WaitingText.Visibility = System.Windows.Visibility.Visible;
 
+			// TEMP: following network request is temporarily commented out; just go straight to NFCWritePage
+
 			// Make network post request
-			NetworkQuerier.CheckInUser(Person.Id,
-				(IAsyncResult result) =>
-				{
+			//NetworkQuerier.CheckInUser(Person.Id,
+			//	(IAsyncResult result) =>
+			//	{
 					NavigationService.Navigate(new Uri("/NFCWritePage.xaml", UriKind.Relative));
-				}
-			);
+			//	}
+			//);
 		}
 	}
 }
