@@ -99,6 +99,9 @@
     <Compile Include="CheckInParticipantPage.xaml.cs">
       <DependentUpon>CheckInParticipantPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EventCheckInPage.xaml.cs">
+      <DependentUpon>EventCheckInPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -124,6 +127,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CheckInParticipantPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EventCheckInPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

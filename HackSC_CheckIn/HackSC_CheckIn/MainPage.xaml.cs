@@ -23,5 +23,10 @@ namespace HackSC_CheckIn
 		{
 			NavigationService.Navigate(new Uri("/CheckInPage.xaml", UriKind.Relative));
 		}
+
+		private void EventCheckInButton_Click(object sender, RoutedEventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/EventCheckInPage.xaml", UriKind.Relative));
+		}
 	}
 }
