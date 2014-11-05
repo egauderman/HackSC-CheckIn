@@ -36,10 +36,30 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ScrollViewer>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+                
+            
+            <StackPanel Grid.Row="0">
+                <TextBlock x:Name="InstructionText"
+                           Text="Touch phone to card..."
+                           Style="{StaticResource PhoneTextTitle2Style}"
+                           TextWrapping="Wrap"
+                           Margin="0,12"
+                           />
 
+                <TextBlock x:Name="WaitingText"
+                           Text="One second..."
+                           Visibility="Collapsed"
+                           Style="{StaticResource EmptyListHeaderStyle}"
+                           />
+            </StackPanel>
+
+            <ScrollViewer Grid.Row="1">
                 <!-- Search results -->
-                <ItemsControl x:Name="EventsItemsControl">
+                <ItemsControl x:Name="RegisteredHackersItemsControl">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -50,7 +70,6 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-
             </ScrollViewer>
         </Grid>
     </Grid>

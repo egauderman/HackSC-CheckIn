@@ -145,7 +145,7 @@ namespace HackSC_CheckIn
 			StartRequest((BASE + "event/" + eventId), callback);
 		}
 
-		public static void CheckinForEvent(string userId, string eventId, AsyncCallback callback)
+		public static void CheckInForEvent(string userId, string eventId, AsyncCallback callback)
 		{
 			StartRequest((BASE + "event/" + eventId + "/checkin?user=" + userId), callback);
 		}
