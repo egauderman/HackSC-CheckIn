@@ -66,7 +66,8 @@ namespace HackSC_CheckIn
 					Person.ProfileUrl +
 					"?id=" + Person.Id +
 					"&first_name=" + Person.FirstName +
-					"&last_name=" + Person.LastName
+					"&last_name=" + Person.LastName +
+					"&email=" + Person.Email
 					);
 
 				// Begin write

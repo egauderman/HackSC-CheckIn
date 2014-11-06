@@ -31,12 +31,14 @@
             <StackPanel>
                 <Image Source="/Assets/HackSCLogo.png"/>
                 <Button x:Name="CheckInPageButton"
-                        Content="Participant Check-In"
-                        Click="CheckInPageButton_Click"
+                	Content="Participant Check-In"
+                	Click="CheckInPageButton_Click"
+                	Height="120"
                         />
                 <Button x:Name="EventCheckInButton"
                         Content="Event Check-In"
                         Click="EventCheckInButton_Click"
+                        Height="120"
                         />
             </StackPanel>
         </Grid>

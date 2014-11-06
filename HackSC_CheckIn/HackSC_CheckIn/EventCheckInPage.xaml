@@ -64,7 +64,7 @@
                         <DataTemplate>
                             <Grid>
                                 <TextBlock x:Name="HackerText"
-                                           Text="{Binding Name}"
+                                           Text="{Binding ButtonText}"
                                            />
                             </Grid>
                         </DataTemplate>

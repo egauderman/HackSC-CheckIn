@@ -76,7 +76,8 @@ namespace HackSC_CheckIn
 				// Stop NFC read
 				device.StopSubscribingForMessage(message.SubscriptionId);
 				// Vibrate phone
-				VibrateController.Default.Start(TimeSpan.FromSeconds(0.1));
+				//VibrateController.Default.Start(TimeSpan.FromSeconds(0.1));
+				//note: commented out because OS vibrates the phone when we use URL
 
 				InstructionText.Visibility = System.Windows.Visibility.Collapsed;
 				WaitingText.Visibility = System.Windows.Visibility.Visible;
@@ -106,7 +107,8 @@ namespace HackSC_CheckIn
 				{
 					Id = queryDict["id"],
 					FirstName = queryDict["first_name"],
-					LastName = queryDict["last_name"]
+					LastName = queryDict["last_name"],
+					Email = queryDict["email"]
 				};
 
 				NetworkQuerier.CheckInForEvent(_currentHacker.Id, Event.Id, EventCheckIn_Callback);
