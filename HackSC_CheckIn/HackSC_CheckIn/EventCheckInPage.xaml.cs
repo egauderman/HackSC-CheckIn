@@ -76,8 +76,7 @@ namespace HackSC_CheckIn
 				// Stop NFC read
 				device.StopSubscribingForMessage(message.SubscriptionId);
 				// Vibrate phone
-				//VibrateController.Default.Start(TimeSpan.FromSeconds(0.1));
-				//note: commented out because OS vibrates the phone when we use URL
+				VibrateController.Default.Start(TimeSpan.FromSeconds(0.1));
 
 				InstructionText.Visibility = System.Windows.Visibility.Collapsed;
 				WaitingText.Visibility = System.Windows.Visibility.Visible;
