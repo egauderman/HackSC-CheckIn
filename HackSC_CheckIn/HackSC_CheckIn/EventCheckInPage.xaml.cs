@@ -117,16 +117,19 @@ namespace HackSC_CheckIn
 
 		private void EventCheckIn_Callback(IAsyncResult result)
 		{
-			WaitingText.Visibility = System.Windows.Visibility.Collapsed;
-
-			if(_currentHacker != null)
+			Dispatcher.BeginInvoke(() =>
 			{
-				RegisteredHackers.Add(_currentHacker);
-				_currentHacker = null;
-			}
+				WaitingText.Visibility = System.Windows.Visibility.Collapsed;
 
-			// Restart NFC read
-			StartNFCRead();
+				if (_currentHacker != null)
+				{
+					RegisteredHackers.Add(_currentHacker);
+					_currentHacker = null;
+				}
+
+				// Restart NFC read
+				StartNFCRead();
+			});
 		}
 
 		protected override void OnNavigatedFrom(NavigationEventArgs e)
