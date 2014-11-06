@@ -12,7 +12,7 @@ namespace HackSC_CheckIn
 {
 	class NetworkQuerier
 	{
-		private static string BASE = "http://go.hacksc.com/api/";
+		private static string BASE = "https://go.hacksc.com/api/";
 		private static string loginparams = null;
 
 		private static void StartRequest(string url, AsyncCallback finalCallback)
