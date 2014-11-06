@@ -40,9 +40,24 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-                
-            
+
+
             <StackPanel Grid.Row="0">
+                
+                <TextBlock x:Name="DescriptionText"
+                           Text="{Binding Description}"
+                           TextWrapping="Wrap"
+                           />
+                
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Hack Points:"
+                               Style="{StaticResource PhoneTextSubtleStyle}"
+                               />
+                    <TextBlock x:Name="HackPointsText"
+                               Text="{Binding HackPoints}"
+                               />
+                </StackPanel>
+                
                 <TextBlock x:Name="InstructionText"
                            Text="Touch phone to card..."
                            Style="{StaticResource PhoneTextTitle2Style}"

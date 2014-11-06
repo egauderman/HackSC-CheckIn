@@ -44,6 +44,7 @@ namespace HackSC_CheckIn
 					hackathonEvent.Id = iterator.Value<string>("id");
 					hackathonEvent.Title = iterator.Value<string>("title");
 					hackathonEvent.Description = iterator.Value<string>("description");
+					hackathonEvent.HackPoints = iterator.Value<string>("points");
 
 					// Add search result to SearchResults
 					HackathonEvents.Add(hackathonEvent);

@@ -37,7 +37,7 @@ namespace HackSC_CheckIn
 				return;
 			}
 
-			PageTitle.DataContext = Event;
+			LayoutRoot.DataContext = Event;
 
 			RegisteredHackersItemsControl.ItemsSource = RegisteredHackers;
 
@@ -122,7 +122,23 @@ namespace HackSC_CheckIn
 
 				if (_currentHacker != null)
 				{
-					RegisteredHackers.Add(_currentHacker);
+					// If _currentHacker is in list remove it
+					RegisteredHackers.Remove(_currentHacker);
+					if (RegisteredHackers.Contains<Hacker>(_currentHacker))
+					{
+						RegisteredHackers.Remove(
+							RegisteredHackers.First<Hacker>(
+								(Hacker h) => { return h.Equals(_currentHacker); }
+							)
+						);
+					}
+					else
+					{
+						// Insert _currentHacker at the top of the list
+						RegisteredHackers.Insert(0, _currentHacker);
+					}
+
+					// Clear _currentHacker
 					_currentHacker = null;
 				}
 

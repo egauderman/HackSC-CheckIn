@@ -32,6 +32,26 @@ namespace HackSC_CheckIn
 		}
 
 		public string ProfileUrl { get; set; }
+
+		public override bool Equals(object obj)
+		{
+			if(base.Equals(obj))
+			{
+				return true;
+			}
+			else
+			{
+				Hacker h = obj as Hacker;
+				if(h != null)
+				{
+					return this.Email.Equals(h.Email);
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
 	}
 
 	public class HackathonEvent
@@ -39,6 +59,7 @@ namespace HackSC_CheckIn
 		public string Id { get; set; }
 		public string Title { get; set; }
 		public string Description { get; set; }
+		public string HackPoints { get; set; }
 
 		public string ButtonText
 		{
