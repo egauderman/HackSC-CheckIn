@@ -14,6 +14,7 @@ using System.Runtime.InteropServices.WindowsRuntime; // For IBuffer to Byte arra
 using Microsoft.Devices; // Vibrate
 using Windows.Foundation; // URL parsing
 using System.Text; // Encoding
+using Newtonsoft.Json.Linq; // JSON
 
 namespace HackSC_CheckIn
 {
@@ -68,7 +69,6 @@ namespace HackSC_CheckIn
 			}
 		}
 
-		Hacker _currentHacker;
 		private void NFCRead_Callback(ProximityDevice device, ProximityMessage message)
 		{
 			Dispatcher.BeginInvoke(() =>
@@ -81,7 +81,7 @@ namespace HackSC_CheckIn
 				InstructionText.Visibility = System.Windows.Visibility.Collapsed;
 				WaitingText.Visibility = System.Windows.Visibility.Visible;
 
-				//// Parse data
+				//// Parse data to get ID
 
 				var buffer = message.Data.ToArray();
 				string uriString = Encoding.Unicode.GetString(buffer, 0, buffer.Length);
@@ -91,26 +91,21 @@ namespace HackSC_CheckIn
 				{
 					uriString = uriString.Remove(uriString.Length - 1);
 				}
+
 				string query = uriString.Split('?')[1];
 
 				string[] queryArray = query.Split('&');
-				Dictionary<string, string> queryDict = new Dictionary<string, string>();
 
+				Dictionary<string, string> queryDict = new Dictionary<string, string>();
 				foreach(string s in queryArray)
 				{
 					string[] split = s.Split('=');
 					queryDict.Add(split[0], split[1]);
 				}
 
-				_currentHacker = new Hacker
-				{
-					Id = queryDict["id"],
-					FirstName = queryDict["first_name"],
-					LastName = queryDict["last_name"],
-					Email = queryDict["email"]
-				};
+				string id = queryDict["id"];
 
-				NetworkQuerier.CheckInForEvent(_currentHacker.Id, Event.Id, EventCheckIn_Callback);
+				NetworkQuerier.CheckInForEvent(id, Event.Id, EventCheckIn_Callback);
 			});
 		}
 
@@ -120,31 +115,51 @@ namespace HackSC_CheckIn
 			{
 				WaitingText.Visibility = System.Windows.Visibility.Collapsed;
 
-				if (_currentHacker != null)
-				{
-					// If _currentHacker is in list remove it
-					RegisteredHackers.Remove(_currentHacker);
-					if (RegisteredHackers.Contains<Hacker>(_currentHacker))
-					{
-						RegisteredHackers.Remove(
-							RegisteredHackers.First<Hacker>(
-								(Hacker h) => { return h.Equals(_currentHacker); }
-							)
-						);
-					}
-					else
-					{
-						// Insert _currentHacker at the top of the list
-						RegisteredHackers.Insert(0, _currentHacker);
-					}
+				//// Parse JSON object
 
-					// Clear _currentHacker
-					_currentHacker = null;
+				JObject jsonObject = result.AsyncState as JObject;
+				//DEBUG:
+				//DescriptionText.Text = jsonObject.ToString();
+
+				JToken registration = jsonObject["registration"];
+				Hacker hacker = new Hacker
+				{
+					Id = registration.Value<string>("id"),
+					FirstName = registration.Value<string>("first_name"),
+					LastName = registration.Value<string>("last_name"),
+					Email = registration.Value<string>("email"),
+				};
+
+				bool ok = jsonObject.Value<bool>("ok");
+				if (!ok)
+				{
+					string error = jsonObject.Value<string>("id");
+					if (error.Equals("already checked in"))
+					{
+						addRegisteredHacker(hacker, true);
+					}
+				}
+				else
+				{
+					addRegisteredHacker(hacker, false);
 				}
 
 				// Restart NFC read
 				StartNFCRead();
 			});
+		}
+
+		private void addRegisteredHacker(Hacker hacker, bool alreadyCheckedIn)
+		{
+			if(alreadyCheckedIn)
+			{
+
+			}
+			else
+			{
+				// Add to RegisteredHackers
+				RegisteredHackers.Add(hacker);
+			}
 		}
 
 		protected override void OnNavigatedFrom(NavigationEventArgs e)

@@ -63,11 +63,12 @@ namespace HackSC_CheckIn
 				// Set data to write
 				var dataWriter = new DataWriter() { UnicodeEncoding = UnicodeEncoding.Utf16LE };
 				dataWriter.WriteString(
-					Person.ProfileUrl +
-					"?id=" + Person.Id +
-					"&first_name=" + Person.FirstName +
-					"&last_name=" + Person.LastName +
-					"&email=" + Person.Email
+					Person.ProfileUrl
+					+ "?"
+					+ "id=" + Person.Id
+					//+ "&first_name=" + Person.FirstName
+					//+ "&last_name=" + Person.LastName
+					//+ "&email=" + Person.Email
 					);
 
 				// Begin write
