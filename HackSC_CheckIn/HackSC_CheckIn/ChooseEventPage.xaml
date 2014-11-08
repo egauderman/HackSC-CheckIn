@@ -28,37 +28,39 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <StackPanel>
-                <!-- Displayed when there are no events -->
-                <TextBlock x:Name="NoEventsText"
+            <ScrollViewer>
+                <StackPanel>
+                    <!-- Displayed when there are no events -->
+                    <TextBlock x:Name="NoEventsText"
                                Text="No events."
                                Style="{StaticResource EmptyListHeaderStyle}"
                                Visibility="Collapsed"
                                />
 
-                <!-- Displayed while waiting for HTTP request response -->
-                <TextBlock x:Name="WaitingText"
+                    <!-- Displayed while waiting for HTTP request response -->
+                    <TextBlock x:Name="WaitingText"
                                Text="One second..."
                                Style="{StaticResource EmptyListHeaderStyle}"
                                Visibility="Collapsed"
                                HorizontalAlignment="Center"
                                />
 
-                <!-- Search results -->
-                <ItemsControl x:Name="EventsItemsControl">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Button x:Name="EventButton"
+                    <!-- Search results -->
+                    <ItemsControl x:Name="EventsItemsControl">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Button x:Name="EventButton"
                                         Content="{Binding ButtonText}"
                                         Click="EventButton_Click"
                                         />
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-                
-            </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 
