@@ -284,7 +284,7 @@ namespace HackSC_CheckIn
 
 		#endregion Stuff I Didn't Write
 
-		public Hacker CheckIn_CurrentPerson;
+		public CheckInHacker CheckIn_CurrentPerson;
 		public HackathonEvent Events_CurrentEvent;
 	}
 }

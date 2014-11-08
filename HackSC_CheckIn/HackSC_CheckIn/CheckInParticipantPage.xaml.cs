@@ -13,7 +13,7 @@ namespace HackSC_CheckIn
 {
 	public partial class CheckInParticipantPage : PhoneApplicationPage
 	{
-		public Hacker Person { get; set; }
+		public CheckInHacker Person { get; set; }
 
 		public CheckInParticipantPage()
 		{
@@ -29,7 +29,11 @@ namespace HackSC_CheckIn
 			}
 			
 			LayoutRoot.DataContext = Person;
-			HasWaiverCheckbox.DataContext = this;
+
+			if(Person.CheckedIn)
+			{
+				CheckInButton.Content = "Write to Card";
+			}
 		}
 
 		private void CheckInButton_Click(object sender, RoutedEventArgs e)

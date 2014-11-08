@@ -15,9 +15,28 @@ using Newtonsoft.Json.Linq; // JSON
 
 namespace HackSC_CheckIn
 {
+	public class CheckInHacker : Hacker
+	{
+		public bool CheckedIn { get; set; }
+		public string ColorString
+		{
+			get
+			{
+				return CheckedIn ? "Gray" : "White";
+			}
+		}
+		public string CheckedInText
+		{
+			get
+			{
+				return CheckedIn ? "(already checked in)" : "(not checked in yet)";
+			}
+		}
+	}
+
 	public partial class CheckInPage : PhoneApplicationPage
 	{
-		public ObservableCollection<Hacker> SearchResults = new ObservableCollection<Hacker>();
+		public ObservableCollection<CheckInHacker> SearchResults = new ObservableCollection<CheckInHacker>();
 
 		public CheckInPage()
 		{
@@ -114,11 +133,14 @@ namespace HackSC_CheckIn
 				JArray resultsArray = jsonObject["registrations"] as JArray;
 				for (JToken iterator = resultsArray.First; iterator != null; iterator = iterator.Next)
 				{
-					Hacker person = new Hacker();
-					person.Id = iterator.Value<string>("id");
-					person.FirstName = iterator.Value<string>("first_name");
-					person.LastName = iterator.Value<string>("last_name");
-					person.Email = iterator.Value<string>("email");
+					CheckInHacker person = new CheckInHacker
+					{
+						Id = iterator.Value<string>("id"),
+						FirstName = iterator.Value<string>("first_name"),
+						LastName = iterator.Value<string>("last_name"),
+						Email = iterator.Value<string>("email"),
+						CheckedIn = (iterator.Value<String>("checkin") != null)
+					};
 
 					// Add search result to SearchResults
 					SearchResults.Add(person);
@@ -134,7 +156,7 @@ namespace HackSC_CheckIn
 
 		private void SearchResultButton_Click(object sender, RoutedEventArgs e)
 		{
-			(App.Current as App).CheckIn_CurrentPerson = (sender as Button).DataContext as Hacker;
+			(App.Current as App).CheckIn_CurrentPerson = (sender as Button).DataContext as CheckInHacker;
 
 			NavigationService.Navigate(new Uri("/CheckInParticipantPage.xaml", UriKind.Relative));
 		}
