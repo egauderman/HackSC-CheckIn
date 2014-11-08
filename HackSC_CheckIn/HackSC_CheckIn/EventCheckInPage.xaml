@@ -61,6 +61,7 @@
                 <TextBlock x:Name="InstructionText"
                            Text="Touch phone to card..."
                            Style="{StaticResource PhoneTextTitle2Style}"
+                           Foreground="{StaticResource PhoneTextMidContrastBrush}"
                            TextWrapping="Wrap"
                            Margin="0,12"
                            />
@@ -75,7 +76,6 @@
                 <!-- Set the Text of this TextBlock to the most recent Hacker -->
                 <TextBlock x:Name="NewPersonText"
                            Style="{StaticResource PhoneTextTitle2Style}"
-                           Foreground="{StaticResource PhoneTextMidContrastBrush}"
                            TextWrapping="Wrap"
                            />
             </StackPanel>
@@ -88,6 +88,7 @@
                             <Grid>
                                 <TextBlock x:Name="HackerText"
                                            Text="{Binding ButtonText}"
+                                           Foreground="{StaticResource PhoneTextMidContrastBrush}"
                                            />
                             </Grid>
                         </DataTemplate>
