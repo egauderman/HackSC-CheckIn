@@ -133,11 +133,7 @@ namespace HackSC_CheckIn
 				bool ok = jsonObject.Value<bool>("ok");
 				if (!ok)
 				{
-					string error = jsonObject.Value<string>("id");
-					if (error.Equals("already checked in"))
-					{
-						addRegisteredHacker(hacker, true);
-					}
+					addRegisteredHacker(hacker, true);
 				}
 				else
 				{
@@ -153,11 +149,12 @@ namespace HackSC_CheckIn
 		{
 			if(alreadyCheckedIn)
 			{
-
+				NewPersonText.Text = hacker.ButtonText + "\n(already registered)";
 			}
 			else
 			{
-				// Add to RegisteredHackers
+				NewPersonText.Text = hacker.ButtonText;
+
 				RegisteredHackers.Add(hacker);
 			}
 		}

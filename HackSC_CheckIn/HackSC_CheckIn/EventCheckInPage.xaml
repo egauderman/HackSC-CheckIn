@@ -69,6 +69,14 @@
                            Text="One second..."
                            Visibility="Collapsed"
                            Style="{StaticResource EmptyListHeaderStyle}"
+                           Margin="0,12"
+                           />
+                
+                <!-- Set the Text of this TextBlock to the most recent Hacker -->
+                <TextBlock x:Name="NewPersonText"
+                           Style="{StaticResource PhoneTextTitle2Style}"
+                           Foreground="{StaticResource PhoneTextMidContrastBrush}"
+                           TextWrapping="Wrap"
                            />
             </StackPanel>
 
